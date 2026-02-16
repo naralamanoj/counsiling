@@ -1,0 +1,16 @@
+[phases.setup]
+nixPkgs = ["python311"]
+
+[phases.install]
+cmds = ["pip install -r requirements.txt"]
+
+[phases.build]
+cmds = [
+    "python manage.py collectstatic --no-input",
+    "python manage.py migrate",
+    "python create_admin.py",
+    "python create_approval_users.py"
+]
+
+[start]
+cmd = "gunicorn student.wsgi:application --bind 0.0.0.0:${PORT:-8000}"
