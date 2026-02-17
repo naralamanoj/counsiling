@@ -29,16 +29,21 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
+# Trusted origins for Railway and Render
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
 ]
-# Add all Railway domains automatically
+
+# Add Railway and Render domains automatically
 if os.environ.get('RAILWAY_PUBLIC_DOMAIN'):
     CSRF_TRUSTED_ORIGINS.append('https://' + os.environ.get('RAILWAY_PUBLIC_DOMAIN'))
+if os.environ.get('RENDER_EXTERNAL_URL'):
+    CSRF_TRUSTED_ORIGINS.append(os.environ.get('RENDER_EXTERNAL_URL'))
 if os.environ.get('RAILWAY_STATIC_URL'):
     CSRF_TRUSTED_ORIGINS.append('https://' + os.environ.get('RAILWAY_STATIC_URL'))
-# Fallback for original Render URL if still needed
+
+# Fallback
 CSRF_TRUSTED_ORIGINS.append('https://counsiling.onrender.com')
 
 CSRF_COOKIE_SECURE = not DEBUG
